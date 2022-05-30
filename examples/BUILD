@@ -246,3 +246,11 @@ jsonnet_to_json_test(
     deps = [":workflow"],
     output_file_contents = False,
 )
+
+jsonnet_to_json_test(
+    name = "strings_arg_test",
+    src = "strings.jsonnet",
+    output_string = True,
+    golden = "strings_golden.txt",
+    canonicalize_golden = False,
+)

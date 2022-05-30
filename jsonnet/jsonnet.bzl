@@ -186,7 +186,7 @@ def _jsonnet_to_json_impl(ctx):
     if ctx.attr.stamp_keys and not stamp_inputs:
         fail("Stamping requested but found no stamp variable to resolve for.")
 
-    other_args = ctx.attr.extra_args + (["-y"] if ctx.attr.yaml_stream else [])
+    other_args = ctx.attr.extra_args + (["-y"] if ctx.attr.yaml_stream else []) + (["-S"] if ctx.attr.output_string else [])
 
     command = (
         [
@@ -364,7 +364,7 @@ def _jsonnet_to_json_test_impl(ctx):
     jsonnet_tla_code, tla_code_stamp_inputs = _make_stamp_resolve(ctx.attr.tla_code, ctx, True)
     stamp_inputs = strs_stamp_inputs + code_stamp_inputs + tla_strs_stamp_inputs + tla_code_stamp_inputs
 
-    other_args = ctx.attr.extra_args + (["-y"] if ctx.attr.yaml_stream else [])
+    other_args = ctx.attr.extra_args + (["-y"] if ctx.attr.yaml_stream else []) + (["-S"] if ctx.attr.output_string else [])
     jsonnet_command = " ".join(
         ["OUTPUT=$(%s" % ctx.executable.jsonnet.short_path] +
         ["-J %s" % im for im in _add_prefix_to_imports(ctx.label, ctx.attr.imports)] +
@@ -459,6 +459,10 @@ _jsonnet_common_attrs = {
         doc = "List of targets that are required by the `srcs` Jsonnet files.",
         providers = ["transitive_jsonnet_files"],
         allow_files = False,
+    ),
+    "output_string": attr.bool(
+        doc = "Output a string as plain text.",
+        default = False,
     ),
 }
 
