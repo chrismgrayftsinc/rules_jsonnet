@@ -1,0 +1,3 @@
+module(name = "io_bazel_rules_jsonnet", version="0.0.0")
+
+bazel_dep(name = "jsonnet_go", version = "0.20.0", repo_name = "google_jsonnet_go")
